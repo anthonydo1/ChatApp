@@ -3,8 +3,12 @@ const messageContainer = document.getElementById('message-container')
 const messageForm = document.getElementById('send-container')
 const messageInput = document.getElementById('message-input')
 
+const name = prompt("What is your name?")
+appendMessage("You have joined the chat as: " + name)
+socket.emit('new-user', name)
+
 socket.on('chat-message', data => {
-  appendMessage(data)
+  appendMessage(`${data.name}: ${data.message}`)
 })
 
 messageForm.addEventListener('submit', e => {
@@ -12,7 +16,7 @@ messageForm.addEventListener('submit', e => {
   const message = messageInput.value
 
   if (message != '') {
-    appendMessage(message)
+    appendMessage(name + ": " + message)
     socket.emit('send-chat-message', message)
     messageInput.value = ''
   }
